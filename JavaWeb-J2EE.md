@@ -50,4 +50,126 @@ Linux常用命令。应用部署有时间就熟悉一下。经济允许买个阿
 
 ## Tomcat
 
+参考博客:<https://www.cnblogs.com/jingmoxukong/p/8258837.html?utm_source=gold_browser_extension>
+
 Tomcat是由Apache开发的一个Servlet容器
+
+解压tar.gz文件用tar -zxf
+
+```shell
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+```
+
+用ps aux | grep tomcat可以查看是否启动成功
+
+### 弯路
+
+启动后发现jre的路径不对,然后到setclasspath.sh里增加
+
+export JRE_HOME=/home/lyy/extension/lyy/java/jdk-11.0.5
+
+就能正常启动了
+
+### Tomcat 重要目录
+
+
+
+- **/bin** - Tomcat 脚本存放目录（如启动、关闭脚本）。 `*.sh` 文件用于 Unix 系统； `*.bat` 文件用于 Windows 系统。
+- **/conf** - Tomcat 配置文件目录。
+- **/logs** - Tomcat 默认日志目录。
+- **/webapps** - webapp 运行的目录。
+
+### web 工程发布目录结构
+
+
+
+一般 web 项目路径结构
+
+```
+|-- webapp                         # 站点根目录
+    |-- META-INF                   # META-INF 目录
+    |   `-- MANIFEST.MF            # 配置清单文件
+    |-- WEB-INF                    # WEB-INF 目录
+    |   |-- classes                # class文件目录
+    |   |   |-- *.class            # 程序需要的 class 文件
+    |   |   `-- *.xml              # 程序需要的 xml 文件
+    |   |-- lib                    # 库文件夹
+    |   |   `-- *.jar              # 程序需要的 jar 包
+    |   `-- web.xml                # Web应用程序的部署描述文件
+    |-- <userdir>                  # 自定义的目录
+    |-- <userfiles>                # 自定义的资源文件
+```
+
+`webapp`：工程发布文件夹。其实每个 war 包都可以视为 webapp 的压缩包。
+
+`META-INF`：META-INF 目录用于存放工程自身相关的一些信息，元文件信息，通常由开发工具，环境自动生成。
+
+`WEB-INF`：Java web应用的安全目录。所谓安全就是客户端无法访问，只有服务端可以访问的目录。
+
+`/WEB-INF/classes`：存放程序所需要的所有 Java class 文件。
+
+`/WEB-INF/lib`：存放程序所需要的所有 jar 文件。
+
+`/WEB-INF/web.xml`：web 应用的部署配置文件。它是工程中最重要的配置文件，它描述了 servlet 和组成应用的其它组件，以及应用初始化参数、安全管理约束等。
+
+### 配置
+
+参考官网介绍
+
+[http://tomcat.apache.org/tomcat-8.5-doc/config/index.html
+
+###　启动
+
+### 部署方式
+
+这种方式要求本地必须安装 Tomcat 。
+
+将打包好的 war 包放在 Tomcat 安装目录下的 `webapps` 目录下，然后在 bin 目录下执行 `startup.bat` 或 `startup.sh` ，Tomcat 会自动解压 `webapps` 目录下的 war 包。
+
+成功后，可以访问 <http://localhost:8080/xxx> （xxx 是 war 包文件名）。
+
+> **注意**
+>
+> 以上步骤是最简单的示例。步骤中的 war 包解压路径、启动端口以及一些更多的功能都可以修改配置文件来定制 （主要是 `server.xml` 或 `context.xml` 文件）。
+
+#### IDE 插件
+
+
+
+常见 Java IDE 一般都有对 Tomcat 的支持。
+
+以 Intellij IDEA 为例，提供了 **Tomcat and TomEE Integration** 插件（一般默认会安装）。
+
+
+
+**使用步骤**
+
+先点击run
+
+- 点击 Run/Debug Configurations > New Tomcat Server > local ，打开 Tomcat 配置页面。
+- 点击 Confiure... 按钮，设置 Tomcat 安装路径。
+- 点击 Deployment 标签页，设置要启动的应用。
+- 设置启动应用的端口、JVM 参数、启动浏览器等。
+- 成功后，可以访问 <http://localhost:8080/（当然，你也可以在> url 中设置上下文名称）。
+
+![tomcat-intellij-run-config.png](https://upload-images.jianshu.io/upload_images/3101171-80dd31daff8424ad.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+
+
+## Serlvet
+
+### Servlet的作用
+
+Servlet的最大作用是能够处理浏览器带来的HTTP请求,并返回一个响应给浏览器,从而实现浏览器和服务器的交互
+
+### JAVAWEB目录结构
+
+
+
+![img](https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib2FPYiazSBurrVsbt1mkHFfDJAWW9gicAUZKZhAjhVjvsayD6GAuabYyHmyf5s6wDs87plhePMFMjfw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+
+
+### 第一个demo
+
+参考博客:<https://www.cnblogs.com/jianyungsun/p/6526301.html>

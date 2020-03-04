@@ -173,3 +173,282 @@ Servlet的最大作用是能够处理浏览器带来的HTTP请求,并返回一�
 ### 第一个demo
 
 参考博客:<https://www.cnblogs.com/jianyungsun/p/6526301.html>
+
+参考博客:<https://www.imooc.com/article/2025>
+
+### Servlet生命周期方法
+
+在你的应用加载并使用一个Servlet时，从初始化到销毁这个Servlet期间会发生一系列的事件.这个期间就叫生命周期
+
+Servlet生命周期的三个核心方法分别是`init()` , `service()` 和 `destroy()`。每个Servlet都会实现这些方法，并且在特定的运行时间调用它们。
+
+
+
+### 使用@WebServlet注解来开发Servlet
+
+#### 引入概念注解
+
+Java 注解（Annotation）又称 Java 标注，是 JDK5.0 引入的一种注释机制。
+
+##### 内置的注解
+
+
+
+Java 定义了一套注解，共有 7 个，3 个在 java.lang 中，剩下 4 个在 java.lang.annotation 中。
+
+**作用在代码的注解是**
+
+- @Override - 检查该方法是否是重写方法。如果发现其父类，或者是引用的接口中并没有该方法时，会报编译错误。
+- @Deprecated - 标记过时方法。如果使用该方法，会报编译警告。
+- @SuppressWarnings - 指示编译器去忽略注解中声明的警告。
+
+作用在其他注解的注解(或者说 元注解)是:
+
+- @Retention - 标识这个注解怎么保存，是只在代码中，还是编入class文件中，或者是在运行时可以通过反射访问。
+- @Documented - 标记这些注解是否包含在用户文档中。
+- @Target - 标记这个注解应该是哪种 Java 成员。
+- @Inherited - 标记这个注解是继承于哪个注解类(默认 注解并没有继承于任何子类)
+
+从 Java 7 开始，额外添加了 3 个注解:
+
+- @SafeVarargs - Java 7 开始支持，忽略任何使用参数为泛型变量的方法或构造函数调用产生的警告。
+- @FunctionalInterface - Java 8 开始支持，标识一个匿名函数或函数式接口。
+- @Repeatable - Java 8 开始支持，标识某注解可以在同一个声明上使用多次。
+
+
+
+使用 `@WebServlet` 注解并且不需要在`web.xml`里为Servlet注册任何信息。**容器会自动注册你的Servlet到运行环境，并且像往常一样处理它。**
+如
+
+```java
+@WebServlet(name="MyFirstServlet",urlPatterns={"/MyFirstServlet"})
+```
+
+
+
+### 编写动态的Servlet响应内容
+
+```
+Servlet能动态显示网页内容。这些内容可以从服务器本身、另外一个网站、或者许多其他网络可以访问的资源里获取。Servlet不是静态网页，它们是动态的。可以说这是它们最大的优势。
+```
+
+
+
+### 处理Servlet请求和响应
+
+Servlet可以轻松创建一个基于请求和响应生命周期的web应用。它们能够提供HTTP响应并且可以使用同一段代码来处理业务逻辑。处理业务逻辑的能力使Servlet比标准的HTML代码更强大。
+
+现实世界里的应用，一个HTML网页表单包含了要发送给Servlet的参数。Servlet会以某种方式来处理这些参数并且 返回一个客户端能够识别的响应。在对象是HttpServlet的情况下，客户端是web浏览器，响应是web页面。`<form>`的 action属性指定了使用哪个Servlet来处理表单里的参数值。
+
+为了获取请求参数，需要调用 HttpServletRequest 对象的 `getParameter()`方法，并且传递你要获取的输入参数的id给该方法。
+`String value1 = req.getParameter("param1");`
+`String value1 = req.getParameter("param2");`
+
+为了发送内容给客户端，你需要使用从 HttpServletResponse 里获取的 PrintWriter 对象。任何写到这个对象的内容都会被写进outputstream里，并会把内容发送回给客户端。
+
+### 监听Servlet容器事件
+
+可以在应用里注册一个监听器来显示应用什么时候开启或者关闭.因此,通过监听这些事件,Servlet可以在一些事件发生时执行相应的动作
+
+为了创建一个基于容器事件执行动作的监听器，你必须创建一个实现 `ServletContextListener` 接口的类。这个类必须实现的方法有 `contextInitialized()` 和 `contextDestroyed()`。这两个方法都需要 `ServletContextEvent` 作为参数，并且在每次初始化或者关闭Servlet容器时都会被自动调用。
+
+为了在容器注册监听器，你可以使用下面其中一个方法：
+
+1) 利用 `@WebListener` 注解。
+2) 在`web.xml`应用部署文件里注册监听器。
+3) 使用 ServletContext 里定义的 `addListener()` 方法
+
+请注意，ServletContextListener 不是Servlet API里唯一的监听器。这里还有一些其他的监听器，比如
+
+```
+javax.servlet.ServletRequestListener
+javax.servlet.ServletRequestAttrbiteListener
+javax.servlet.ServletContextListener
+javax.servlet.ServletContextAttributeListener
+javax.servlet.HttpSessionListener
+javax.servlet.HttpSessionAttributeListener
+```
+
+### 传递Servlet初始化参数
+
+Servlet同样可以接受初始化参数,并在处理第一个请求前使用它们来构建配置参数
+
+在web,xml设置完后就可以调用getServletConfig.getInitiaizationParameter()并传递参数名给该方法来使用参数就像下面展示的代码一样：
+
+`<web-app>`
+    `<servlet>`
+        `<servlet-name>SimpleServlet</servlet-name>`
+        `<servlet-class>com.howtodoinjava.servlets.SimpleServlet</servlet-class>`
+
+        <!-- Serv
+    let init param -->
+        <init-param>
+            <param-name>name</param-name>
+            <param-value>value</param-value>
+        </init-param>
+    
+    </servlet>
+
+`</web-app>`
+
+```
+String value = getServletConfig().getInitParameter("name");
+```
+
+### 为特定的URL请求添加Servlet过滤器
+
+Web过滤器在给定的URL被访问时对请求进行预处理并调用相应的功能是很有用的.相比于直接调用给定URL请求的Servlet,包含相同URL模式的过滤器filter会在Servlet调用前被调用.
+
+过滤器必须要实现`javax.servlet.Filter`接口。这个接口包含了`init()`，`descriptor()`和`doFilter()`这些方法。`init()`和`destroy()`方法会被容器调用。 `doFilter()`方法用来在过滤器类里实现逻辑任务。如果你想把过滤器组成过滤链（chain filter）或者存在多匹配给定URL模式的个过滤器，它们就会根据`web.xml`里的配置顺序被调用。
+
+为了在web.xml里配置过滤器，需要使用<filter>和<filter-mapping> XML元素以及相关的子元素标签。
+
+``<filter>`
+`<filter-name>LoggingFilter</filter-name>`
+`<filter-class>LoggingFilter</filter-class>`
+`</filter>`
+`<filter-mapping>`
+`<filter-name>LogingFilter</filter-name>`
+`<url-pattern>/*</url-pattern>`
+`</filter-mapping>`
+
+如果你要使用注解来为特定的servlet配置过滤器，可以使用@WebFilter注解
+
+### 使用Servlet下载二进制文件
+
+几个主要头的作用
+
+（1）Content-Type的作用
+
+该实体头的作用是让服务器告诉浏览器它发送的数据属于什么文件类型。
+
+例如：当Content-Type 的值设置为text/html和text/plain时,前者会让浏览器把接收到的实体内容以HTML格式解析,后者会让浏览器以普通文本解析.
+
+（2）Content-Disposition 的作用
+
+当Content-Type 的类型为要下载的类型时 , 这个信息头会告诉浏览器这个文件的名字和类型。
+
+在讲解这个内容时,张老师同时讲出了解决中文文件名乱码的解决方法,平常想的是使用getBytes() , 实际上应使用email的附件名编码方法对文件名进行编码,但IE不支持这种作法(其它浏览器支持) , 使用javax.mail.internet.*包的MimeUtility.encodeWord("中文.txt")的方法进行编码。
+
+为了下载一个文件，Servlet必须提供一个和下载文件类型匹配的响应类型。同样，必须在响应头里指出该响应包含附件
+
+通过调用 `ServletContext.getResourceAsStream()` 方法并传递文件路径给该方法，你可以获取要下载的文件（文件保存在文件系统）的引用。这个方法会返回一个输入流（InputStream）对 象，我们可以用这个对象来读取文件内容。当读取文件时，我们创建一个字节缓存区（byte buffer）从文件里获取数据块。最后的工作就是读取文件内容并且把它们复制到输出流。我们使用while循环来完成文件的读取，这个循环直到读取了文 件的所有内容才会跳出循环。我们使用循环来读进数据块并把它写进输出流。把所有数据写进输出流后，ServletOutputStream 对象的flush方法就会被调用并且清空内容和释放资源。
+
+
+
+## 过滤器
+
+![img](https://mmbiz.qpic.cn/mmbiz_png/2BGWl1qPxib0jZYGcibxjnjskR3epWiapBqjt13uraMblDDOYFpiaibHfKBEiblPvCMgG6yMZ69dQdu0GcnruC7QU6Pw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+过滤器可以做：**过滤一些敏感的字符串【规定不能出现敏感字符串】、避免中文乱码【规定Web资源都使用UTF-8编码】、权限验证【规定只有带Session或Cookie的浏览器，才能访问web资源】等等**
+
+### 过滤器API
+
+只要Java类实现了Filter接口就可以称为过滤器
+
+```java
+public interface Filter {
+    public void init(FilterConfig var1) throws ServletException;
+    public void doFilter(ServletRequest var1,ServletResponse var2,FilterChain var3)
+    public void destroy();
+    public boolean isLoggable(LogRecord record)；
+}
+```
+
+FilterChain是一个接口
+
+在java中就使用了链式结构.把所有的过滤器都放在FilterChain里边
+
+### filter部署
+
+#### 第一种方式：在web.xml文件中配置
+
+#### filter
+
+**<filter>用于注册过滤器**
+
+```
+<filter>
+         <filter-name>FilterDemo1</filter-name>
+         <filter-class>FilterDemo1</filter-class>
+         <init-param>
+         <param-name>word_file</param-name> 
+         <param-value>/WEB-INF/word.txt</param-value>
+         </init-param>
+</filter>
+```
+
+`<filter-name>`用于**为过滤器指定一个名字**，该元素的内容不能为空。
+`<filter-class>`元素用于指定过滤器的**完整的限定类名**。
+`<init-param>`元素用于为过滤器指定初始化参数，它的子元素指定参数的名字，`<param-value>`指定参数的值。在过滤器中，可以**使用FilterConfig接口对象来访问初始化参数**。
+
+#### filter-mapping
+
+`<filter-mapping>`元素用于**设置一个Filter 所负责拦截的资源**。
+
+一个Filter拦截的资源可**通过两种方式来指定：Servlet 名称和资源访问的请求路径**
+
+```
+<filter-mapping>
+    <filter-name>FilterDemo1</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+```
+
+`<filter-name>`子元素用于设置filter的注册名称。**该值必须是在元素中声明过的过滤器的名字**
+**<url-pattern>设置 filter 所拦截的请求路径(过滤器关联的URL样式)**
+**<servlet-name>指定过滤器所拦截的Servlet名称**。
+`<dispatcher>`指定过滤器所拦截的资源被 Servlet 容器调用的方式，可以是**REQUEST,INCLUDE,FORWARD和ERROR之一，默认REQUEST**。用户可以设置多个`<dispatcher>` 子元素**用来指定 Filter 对资源的多种调用方式进行拦截。**
+
+#### dispatcher
+
+子元素可以设置的值及其意义：
+
+- REQUEST：**当用户直接访问页面时，Web容器将会调用过滤器**。如果目标资源是通过RequestDispatcher的include()或forward()方法访问时，那么该过滤器就不会被调用。
+- INCLUDE：如果目标资源**是通过RequestDispatcher的include()方法访问时，那么该过滤器将被调用**。除此之外，该过滤器不会被调用。
+- FORWARD：如果目标资源是通过**RequestDispatcher的forward()方法访问时，那么该过滤器将被调用**，除此之外，该过滤器不会被调用。
+- ERROR：如果目标资源是**通过声明式异常处理机制调用时，那么该过滤器将被调用**。除此之外，过滤器不会被调用。
+
+#### 第二种方式:通过注解配置
+
+`WebFilter(filterName = "FilterDemo1",urlPatterns="/*")`
+
+上面配置是`"*/*"`,所有的Web资源都需要途径过滤器
+
+如果想要部分的Web资源进行过滤器过滤则需要指定Web资源的名称即可
+
+### 过滤器的执行顺序
+
+FilterChain中的doFilter()方法决定着是否放行下一个过滤器执行(如果没有过滤器了,就执行目标资源)
+
+那么，多个过滤器谁前谁后呢？这还与我们前面的配置有关
+
+- 注解配置：按照类名字符串比较，值小的先执行
+
+- - Eg：AFilterDemo 优先于 BFilterDemo
+
+
+
+- web.xml配置：`<filter-mapping>`中谁在上面，谁优先执行
+
+
+
+### 过滤器练习问题解决
+
+1,网络上代码复制报illegal character 200B
+
+复制到typora就能看到异常处，删除即可
+
+２一个或多个筛选器启动失败。完整的详细信息将在相应的容器日志文件中找到
+
+参考博客:<https://blog.csdn.net/devnn/article/details/104373310>
+
+
+
+setAttribute这个方法，在JSP内置对象session和request都有这个方法，这个方法作用就是保存数据，然后还可以用getAttribute方法来取出。
+比如现在又个User对象，User curruser = new User("zhangsan", 20, "男");
+1，request.setAttribute(“curruser”, curruser)这个方法是将curruser这个对象保存在request作用域中，然后在转发进入的页面就可以获取到你的值，如果你会一些框架的话，那些框架标签也可以获取到，比如struts标签，还有jstl。如果这你都不会的话，那么你可以在jsp页面编写java小脚本来获取:<% User myuser = (User)request.getAttribute("curruser")%>,在jsp页面显示值:<%=myuser.getName()%>。
+2，session.setAttribute("curruser", curruser)。这个方法和上面唯一的区别就是作用域，就是在你整个程序启动的时候，如果在session中保存了数据，那么在你这个无论你在哪个页面，在什么时候都可以获取到这个值，全局的，只要你的这个程序是启动的。session默认的过期时间是30分钟，过期无效，可以去修改这个值。
+
+
+

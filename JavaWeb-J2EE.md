@@ -452,3 +452,193 @@ setAttribute这个方法，在JSP内置对象session和request都有这个方法
 
 
 
+
+
+## Maven
+
+参考博客:<https://www.cnblogs.com/hzg110/p/6936101.html>
+
+### maven是什么
+
+maven是一款服务于java平台的自动化构建工具
+
+构建:把动态的Web工程经过编译得到的编译结果部署到服务器上的整个过程
+
+建的各个环节
+
+　　[1] 清理clean：将以前编译得到的旧文件class字节码文件删除
+
+　　[2] 编译compile：将java源程序编译成class字节码文件
+
+　　[3] 测试test：自动测试，自动调用junit程序
+
+　　[4] 报告report：测试程序执行的结果
+
+　　[5] 打包package：动态Web工程打War包，java工程打jar包
+
+　　[6] 安装install：Maven特定的概念-----将打包得到的文件复制到“仓库”中的指定位置
+
+　　[7] 部署deploy：将动态Web工程生成的war包复制到Servlet容器下，使其可以运行
+
+idea路径备份:/home/lyy/下载/idea-IU-191.7479.19/plugins/maven/lib/maven3/
+
+补充:**ename**
+
+命令用字符串替换的方式批量改变文件名。
+
+语法 
+rename(参数) 
+参数 
+原字符串：将文件名需要替换的字符串； 
+目标字符串：将文件名中含有的原字符替换成目标字符串； 
+文件：指定要改变文件名的文件列表。 
+实例 
+将main1.c重命名为main.c
+
+rename main1.c main.c main1.c 
+rename**支持通配符**
+
+? 可替代单个字符 
+\* 可替代多个字符 
+
+### **常用maven命令**
+
+　　[1] mvn clean：清理 
+
+　　[2] mvn compile：编译主程序
+
+　　[3] mvn test-compile：编译测试程序
+
+　　[4] mvn test：执行测试 
+
+　　[5] mvn package：打包
+
+　　[6] mvn install：安装
+
+　　执行maven命令必须进入到pom.xml的目录中进行执行
+
+错误:[ maven：不再支持源选项 5。请使用 6 或更高版本。](https://www.cnblogs.com/huiy/p/11751858.html)
+
+
+
+解决办法：maven报错：不再支持源选项 5。请使用 6 或更高版本。
+
+在pom.xml中添加maven的配置
+
+[![image](https://img2018.cnblogs.com/blog/913181/201910/913181-20191028140251470-54869573.png)](https://img2018.cnblogs.com/blog/913181/201910/913181-20191028140251020-1289073643.png)
+
+<maven.compiler.source>11</maven.compiler.source>
+<maven.compiler.target>11</maven.compiler.target>
+
+
+
+依赖的包的仓库的默认位置/home/lyy/.m2/repository
+
+**mvn compile** 生成target文件夹
+
+**mvn test-compile** 生成target/test-classes文件夹
+
+**mvn package** 在test文件夹中生成打包好的jar包
+
+**mvn clean**，发现整个target文件夹都没了
+
+### 仓库和坐标
+
+**pom.xml**:Project Objext Model 项目对象模型.它是maven的核心配置文件,所有的构建的配置都在这里设置
+
+**坐标 **
+
+使用下面的三个向量在仓库中唯一的定位一个maven工程
+
+![img](https://images2015.cnblogs.com/blog/31127/201706/31127-20170604084722211-90234747.png)
+
+![img](https://images2015.cnblogs.com/blog/31127/201706/31127-20170604014732196-1454027414.png)
+
+　maven坐标和仓库对应的映射关系：[groupId]\[artifactId]\[version]\[artifactId]-[version].jar
+
+　　　　去本地仓库看一下此目录：org\springframework\spring-core\4.3.4.RELEASE\spring-core-4.3.4.RELEASE.jar
+
+### 依赖
+
+**maven解析依赖信息时会到本地仓库中取查找被依赖的jar包**
+
+　　　　1、对于本地仓库中没有的会去中央仓库去查找maven坐标来获取jar包，获取到jar之后会下载到本地仓库
+
+　　　　2、对于中央仓库也找不到依赖的jar包的时候，就会编译失败了
+
+**如果依赖的是自己或者团队开发的maven工程，需要先使用install命令把被依赖的maven工程的jar包导入到本地仓库中**
+
+举例：现在我再创建第二个maven工程HelloFriend，其中用到了第一个Hello工程里类的sayHello(String name)方法我们在给HelloFriend项目使用 mvn compile命令进行编译的时候，会提示缺少依赖Hello的jar包。怎么办呢？到第一个maven工程中执行 mvn install后，你再去看一下本地仓库，你会发现有了Hello项目的jar包一旦本地仓库有了依赖的maven工程的jar包后，你再到HelloFriend项目中使用 mvn compile命令的时候，可以成功编译
+
+**依赖范围**
+
+＜scope>compile</scope>
+
+​        1.compile，默认值，适用于所有阶段（开发、测试、部署、运行），本jar会一直存在所有阶段。 
+
+　　2、provided，只在开发、测试阶段使用，目的是不让Servlet容器和你本地仓库的jar包冲突 。如servlet.jar。 
+
+　　3、runtime，只在运行时使用，如JDBC驱动，适用运行和测试阶段。 
+
+　　4、test，只在测试时使用，用于编译和运行测试代码。不会随项目发布。 
+
+　　5、system，类似provided，需要显式提供包含依赖的jar，Maven不会在Repository中查找它。
+
+
+
+### 生命周期
+
+不管你要执行生命周期的哪一个阶段,maven都是从这个生命周期的开始来执行
+
+**插件：**每个阶段都有插件（plugin），看上面标红的。**插件的职责就是执行它对应的命令。**
+
+
+
+### maven工程的依赖高级特性
+
+**依赖的传递性**
+
+　　**![img](https://images2015.cnblogs.com/blog/31127/201706/31127-20170604192629649-1312146036.png)**
+
+　　WebMavenDemo项目依赖JavaMavenService1       JavaMavenService1项目依赖JavaMavenService2
+
+　　pom.xml文件配置好依赖关系后，必须首先mvn install后，依赖的jar包才能使用。
+
+　　　　1、WebMavenDemo的pom.xml文件想能编译通过，JavaMavenService1必须mvn install
+
+　　　　2、JavaMavenService的pom.xml文件想能编译通过，JavaMavenService2必须mvn install
+
+　　**传递性：**
+
+　　　　![img](https://images2015.cnblogs.com/blog/31127/201706/31127-20170604194112477-353162303.png)
+
+　　　　在Eclipse中，为JavaMavenService2中增加了一个spring-core.jar包后，会惊喜的发现依赖的两个项目都自动的增加了这个jar包
+
+　　　　这就是依赖的传递性。
+
+　　　　注意：非compile范围的依赖是不能传递的。
+
+　　**② 依赖版本的原则：**
+
+　　　　**1、路径最短者优先原则**
+
+​              **![img](https://images2015.cnblogs.com/blog/31127/201706/31127-20170604195507696-1972000848.png)**
+
+　　　　　　Service2的log4j的版本是1.2.7版本，Service1排除了此包的依赖，自己加了一个Log4j的1.2.9的版本，那么WebMavenDemo项目遵守路径最短优先原则，Log4j的版本和Sercive1的版本一致。
+
+　　　　**2、路径相同先声明优先原则**
+
+　　　　**![img](https://images2015.cnblogs.com/blog/31127/201706/31127-20170604200125383-1768845842.png)**
+
+　　　　　　这种场景依赖关系发生了变化，WebMavenDemo项目依赖Sercive1和Service2，它俩是同一个路径，那么谁在WebMavenDemo的pom.xml中先声明的依赖就用谁的版本。
+
+
+
+### build配置
+
+？这里没看懂
+
+
+
+## Spring
+

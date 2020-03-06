@@ -458,6 +458,8 @@ setAttribute这个方法，在JSP内置对象session和request都有这个方法
 
 参考博客:<https://www.cnblogs.com/hzg110/p/6936101.html>
 
+依赖代码查询网站<https://mvnrepository.com/>
+
 ### maven是什么
 
 maven是一款服务于java平台的自动化构建工具
@@ -638,7 +640,151 @@ rename**支持通配符**
 
 ？这里没看懂
 
+<https://www.zhihu.com/question/300830746>
 
+### 补充:idea使用技巧
+
+**删除当前行**
+
+```text
+ctrl + y
+
+```
+
+**全局查找文本**
+
+```text
+ctrl + shift + F
+```
+
+**显示类之间的关系**
+
+```text
+ctrl + alt + u
+```
+
+**在当前光标在的这样一行的下一行添加一行, 并自动添加括号, 标点符号等**
+
+```text
+ctrl + shfit +enter
+```
+
+**选中当前单词(非常好用)**
+
+```text
+ctrl + w
+```
+
+**运行当前类**
+
+```text
+ctrl + shift + F10
+```
+
+**从多项目中启动一个 正常模式**
+
+```text
+alt + shfit + F10
+```
+
+**快速的查看选中类, 选中方法的定义**
+
+> 有的时候我们不想进入方法内部, 或者进入类的内部查看细节, 想要在外面就探查清楚, 就可以使用此种方法
+
+```java
+ctrl + shift + i
+```
+
+**Ctrl+鼠标滚轴修改字体大小**
+
+alt+enter红色灯泡
+
+psvm sout缩写
 
 ## Spring
 
+#### 下载
+
+maven 依赖
+
+```java
+<!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>spring-webmvc</artifactId>
+    <version>5.2.4.RELEASE</version>
+</dependency>
+<dependency>
+    <groupId>org.springframework</groupId>
+    <artifactId>jdbc</artifactId>
+    <version>5.2.4.RELEASE</version>
+</dependency>
+
+```
+
+### IOC理论推导
+
+参考博客:<https://www.cnblogs.com/hellokuangshen/p/11249253.html>
+
+组合?设计模式?Setter?注入?
+
+#### 接口的意义
+
+面向接口而不是面向实现 这是一个重要的面向对象设计原则所有实现接口的类都可以实例化接口的引用变量 ，然后通过接口统一调用接口方法，jvm会自动识别是那种实现类，然后调用具体实现类的接口方法
+
+控制反转,系统的耦合性大大降低
+
+控制反转是一种通过描述(XML或注解)并通过第三方去生产或获取特定对象的方式,在Spring中实现控制反转的IOC容器,其实现方法是依赖注入
+
+### 3.HelloSpring
+
+
+
+<https://docs.spring.io/spring/docs/5.2.4.RELEASE/spring-framework-reference/>
+
+#### .2.2。实例化容器
+
+提供给`ApplicationContext`构造函数的位置路径是资源字符串，这些资源字符串使容器可以从各种外部资源（例如本地文件系统，Java等）加载配置元数据`CLASSPATH`。
+
+
+
+```java
+ApplicationContext context = new ClassPathXmlApplicationContext("services.xml", "daos.xml");//CPX代替 <property ref="mysqlImpl"/>引用Spring容器中创建好的对象
+```
+
+bean = 对象 等于new了一个对象
+
+id="变量名" class=new 的对象
+
+property 相当于给对象中的属性设置一个值
+
+控制:传统应用程序的对象是由程序本身控制创建的,使用Spring后，对象是由Spring来创建的
+
+普通属性value,类对象用ref
+
+
+
+### IOC创建方式
+
+
+
+
+
+
+
+
+
+
+
+###　问题
+
+解决idea application context not configured for this file的问题
+
+
+spring配置文件中时常会出现这个提示，翻译过来大概意思就是没有配置该文件到项目中
+
+于是进入到file-Project Structure中查看
+
+可以很明显的看到下面有个感叹号，大概意思是下面的文件没有匹配
+
+知道原因就很好解决问题了，只需要加到项目中去就可以了

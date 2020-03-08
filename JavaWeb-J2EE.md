@@ -701,6 +701,10 @@ alt+enter红色灯泡
 
 psvm sout缩写
 
+**ALT+Insert键**
+
+generate快捷键
+
 ## Spring
 
 #### 下载
@@ -766,15 +770,156 @@ property 相当于给对象中的属性设置一个值
 
 ### IOC创建方式
 
+1.使用无参构造创建对象
+
+2.使用有参构造创建对象
+
+beans.xml中bean就帮忙new了一个对象，无论是否getBean
+
+在配置文件加载的时候，容器中管理的对象就已经初始化了
 
 
 
+### Spring配置
+
+**alias别名**标签
+
+<alias>
+
+```java
+    <alias name="User4" alias="aliasTest"/>
+```
+
+功能:给id取别名
+
+**bean**
+
+id bean的唯一标识符m也就是相当于对象名
+
+class: bean对象所对应的全限定名:包名+类型
+
+name:别名,且可取多个
+
+```xml
+<bean id="user1" class="com.lyy.pojo.User" name="user2 u2,u3;u4">
+</bean>
+```
+
+**import**
+
+内容相同则会合并
+
+将多个配置文件，导入合并为一个
+
+```xml
+<import resource="beans.xml"/>
+```
+
+### DI依赖注入
+
+#### 基于Setter方式注入
+
+构造器注入
+
+set方式注入
+
+​	依赖:bean对象的创建依赖于容器
+
+​	注入:bean对象中的所有属性,由容器来注入
+
+Properties类
+
+##### 前言
+
+> Java中的Properties类属于配置文件，以键值对的方式存储，可以看做是属性集。
+> Properties类（Java.util.Properties）继承Hashtable（Java.util.Hashtable）
+
+##### 主要方法
+
+- getProperty ( String key)：用指定的键在此属性列表中搜索属性。也就是通过参数 key ，得到 key 所对应的 value。
+- load ( InputStream inStream)：从输入流中读取属性列表（键和值）。通过对指定的文件（比如test.properties 文件）进行装载来获取该文件中的所有键值对。以供 getProperty ( String key) 来搜索。
+- setProperty ( String key, String value)：他通过调用父类的put方法来设置键值对。
+- store ( OutputStream out, String comments)：将此 Properties 表中的属性列表（键和值）写入输出流。与 load 方法相反，该方法将键值对写入到指定的文件中去。
+- clear ()：清除所有装载的键值对。该方法由父类中提供。
+- Enumeration<?> propertyNames()：返回Properties中的key值。
 
 
 
+中间无内容就用自闭合
+
+```xml
+<null></null>
+<null/>
+```
+
+#### c命名和p命名空间注入
+
+**p空间**
+
+```xml
+beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean name="john-classic" class="com.example.Person">
+        <property name="name" value="John Doe"/>
+        <property name="spouse" ref="jane"/>
+    </bean>
+
+    <bean name="john-modern"
+        class="com.example.Person"
+        p:name="John Doe"
+        p:spouse-ref="jane"/>
+
+    <bean name="jane" class="com.example.Person">
+        <property name="name" value="Jane Doe"/>
+    </bean>
+</beans>
+```
+
+此示例不仅包括使用p-namespace的属性值，还使用特殊格式声明属性引用。第一个bean定义用于`<property name="spouse" ref="jane"/>`创建从bean `john`到bean 的引用 `jane`，而第二个bean定义`p:spouse-ref="jane"`用作属性来执行完全相同的操作。在这种情况下，`spouse`属性名称是，而该`-ref`部分表示这不是一个直接值，而是对另一个bean的引用。
+
+p空间实际上等同于property
 
 
 
+#### c-namespace 依赖注入
+
+```xml
+与具有p-namespace的XML Shortcut相似，在Spring 3.1中引入的c-namespace允许使用内联属性来配置构造函数参数，而不是嵌套constructor-arg元素。
+
+以下示例使用c:名称空间执行与 基于构造函数的依赖注入相同的操作：
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="beanTwo" class="x.y.ThingTwo"/>
+    <bean id="beanThree" class="x.y.ThingThree"/>
+
+    <!-- traditional declaration with optional argument names -->
+    <bean id="beanOne" class="x.y.ThingOne">
+        <constructor-arg name="thingTwo" ref="beanTwo"/>
+        <constructor-arg name="thingThree" ref="beanThree"/>
+        <constructor-arg name="email" value="something@somewhere.com"/>
+    </bean>
+
+    <!-- c-namespace declaration with argument names -->
+    <bean id="beanOne" class="x.y.ThingOne" c:thingTwo-ref="beanTwo"
+        c:thingThree-ref="beanThree" c:email="something@somewhere.com"/>
+
+</beans>
+```
+
+注意:需要在xml中写依赖如
+
+ `xmlns:c="http://www.springframework.org/schema/c"`
+
+c-namespace类的有参构造
 
 ###　问题
 
@@ -788,3 +933,247 @@ spring配置文件中时常会出现这个提示，翻译过来大概意思就�
 可以很明显的看到下面有个感叹号，大概意思是下面的文件没有匹配
 
 知道原因就很好解决问题了，只需要加到项目中去就可以了
+
+
+
+### Bean的作用域
+
+| Scope                                                        | Description                                                  |
+| :----------------------------------------------------------- | :----------------------------------------------------------- |
+| [singleton](https://docs.spring.io/spring/docs/5.2.4.RELEASE/spring-framework-reference/core.html#beans-factory-scopes-singleton) | (Default) Scopes a single bean definition to a single object instance for each Spring IoC container. |
+| [prototype](https://docs.spring.io/spring/docs/5.2.4.RELEASE/spring-framework-reference/core.html#beans-factory-scopes-prototype) | Scopes a single bean definition to any number of object instances. |
+| [request](https://docs.spring.io/spring/docs/5.2.4.RELEASE/spring-framework-reference/core.html#beans-factory-scopes-request) | Scopes a single bean definition to the lifecycle of a single HTTP request. That is, each HTTP request has its own instance of a bean created off the back of a single bean definition. Only valid in the context of a web-aware Spring `ApplicationContext`. |
+| [session](https://docs.spring.io/spring/docs/5.2.4.RELEASE/spring-framework-reference/core.html#beans-factory-scopes-session) | Scopes a single bean definition to the lifecycle of an HTTP `Session`. Only valid in the context of a web-aware Spring `ApplicationContext`. |
+| [application](https://docs.spring.io/spring/docs/5.2.4.RELEASE/spring-framework-reference/core.html#beans-factory-scopes-application) | Scopes a single bean definition to the lifecycle of a `ServletContext`. Only valid in the context of a web-aware Spring `ApplicationContext`. |
+| [websocket](https://docs.spring.io/spring/docs/5.2.4.RELEASE/spring-framework-reference/web.html#websocket-stomp-websocket-scope) | Scopes a single bean definition to the lifecycle of a `WebSocket`. Only valid in the context of a web-aware Spring `ApplicationContext`. |
+
+#### 1.singleton scope(单例模式)
+
+默认模式
+
+```xml
+<bean id="UserOne" class="com.lyy.pojo1.UserOne" p:name="lyy" p:age="18" scope="singleton"/>
+```
+
+**2.prototype scope(原型模式)**
+
+每次从容器中get时,都会产生一个新对象
+
+```xml
+<bean id="UserOne" class="com.lyy.pojo1.UserOne" p:name="lyy" p:age="18" scope="prototype"/>
+```
+
+
+
+### Bean的自动装配
+
+在Spring中有三种装配的方式
+
+在xml中配置
+
+在java中配置
+
+实现隐式的自动装配
+
+##### byName自动装配
+
+byName会自动在容器上下文中查找,和自己对象set方法中this的值对应的bean id,要保证id唯一
+
+```xml
+<bean id="cat" class="com.lyy.pojo1.Cat"/>
+<bean id="dog" class="com.lyy.pojo1.Dog"/>
+    <bean id="man" class="com.lyy.pojo1.Man" autowire="byName">
+        <property name="name" value="lyy"/>
+    </bean>
+```
+
+
+
+##### byType自动装配
+
+byName会自动在容器上下文中查找,和自己对象属性类型相同的bean 
+
+要去bean id的类型全局唯一,就是bean的class唯一
+
+```xml
+<class="com.lyy.pojo1.Cat"/>
+<class="com.lyy.pojo1.Dog"/>
+    <bean id="man" class="com.lyy.pojo1.Man" autowire="byType">
+        <property name="name" value="lyy"/>
+    </bean>
+```
+
+
+
+###　使用注解实现自动装配
+
+要使用注解须知:
+
+1.导入约束 context约束
+
+2.配置注解的支持  <context:annotation-config/>
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+
+</beans>
+```
+
+**@Autowired**
+
+在属性名上使用
+
+注解是不需要set方法的
+
+加了`@Nullable`注解后即使为空也不会报错
+
+`@Qualifier`
+
+@Autowired配合@Qualifier(value="id名")能实现指定bean中id的自动装配，以防止冲突，通常在无法通过一个注解[@Autowired]完成的时候
+
+**＠Resource**
+
+java原生　类似@Autowired按照
+
+＠Resource(value)
+
+#### 小结
+
+@Resource和@Autowired的区别
+
+1.都是用来自动装配的,都可以放在属性字段上
+
+2.@Autowired通过byType的方式来实现
+
+3.@Resource默认通过byName的方式实现，如果找不到名字，则通过byType实现
+
+
+
+### Spring注解开发
+
+#### 1.bean
+
+在Spring4之后,要使用注解开发,必须保证aop的包的导入
+
+使用注解需要导入context约束,增加注解的支持
+
+#### 2.属性如何注入
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+
+</beans>
+```
+
+
+
+```xml
+<!--指定要扫描的包,这个包下的注释就会生效-->
+<context:component-scan base:package="com.kuang.pojo"/>
+```
+
+
+
+#### 3.衍生的注解
+
+```java
+@Component
+public class User {
+    @Value("lyy")
+    public String name;
+}
+```
+
+//**@Value**还可以写在set方法上
+
+**@Component**的衍生注解,我们在web开发中,会按照mvc三层架构分层
+
+dao **@Repository**
+
+service **@Service**
+
+controller **@Controller**
+
+功能　等价的
+
+＠Scope("singleton")//在类名上,单例模式
+
+＠Scope("prototype")//
+
+#### ４.自动装配置
+
+
+
+#### 5.作用域
+
+
+
+#### 6.小结
+
+注解一般用来实现属性的注入
+
+
+
+### 使用JavaConfig实现配置
+
+
+
+###　代理模式
+
+代理模式的分类:
+
+静态代理
+
+动态代理
+
+#### 静态代理
+
+角色分析:
+
+抽象角色:一般会使用接口或者抽象类来解决
+
+真实角色:被代理的角色
+
+代理角色:代理真实角色,代理真实角色后，会对其进行一些附属操作
+
+客户:访问代理对象的人
+
+**代码步骤:**
+
+1.接口
+
+2.真实角色
+
+3.代理角色
+
+4.客户端访问代理角色
+
+代理模式的好处:
+
+可以使真实角色的操作更加纯粹,不用去关注一些公共的业务
+
+公共也就交给代理角色 实现了业务的分工
+
+公共业务发生扩展的时候，方便集中管理
+
+缺点:
+
+一个真实角色就会产生一个代理角色,代码量会翻倍

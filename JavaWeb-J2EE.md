@@ -48,6 +48,59 @@ Linux常用命令。应用部署有时间就熟悉一下。经济允许买个阿
 
 
 
+
+
+作者：谢龙
+
+
+
+
+
+更新：我新开通了知乎专栏 [Not A Nerd? - 知乎专栏](https://zhuanlan.zhihu.com/notageek)
+现在互联网上资源丰富，Java 学习并不难。贴个 Java 服务端入门和进阶指南，是给我们组新人入门用的，包括了学习目标、需要掌握的技能和参考资料，并规划了学习阶段和时间，希望帮助到题主。前言
+
+- 尽量用 google 查找技术资料。
+- 有问题在 stackoverflow 找找，大部分都已经有人回答。
+- 多看官方的技术文档。
+- ibm developerworkers 的文章质量整体上有保障。
+- 平时花一些时间在 github 上阅读优秀项目源码。
+
+入门（1-2 个月）
+
+1. 目标：参与简单的项目开发。
+2. 技能：
+   - 掌握 Java。经典的《Java 核心技术：卷1 基础知识》(或者《Java 编程思想》)必看，跳过其中的图形和 applet 章节。习惯查阅 Java API Doc。为了保证代码的质量，《Effective Java》、《Clean Code》和《重构》也需要至少通读一遍。
+   - 熟悉 Linux 开发环境和 bash shell。Linux 是我们的开发和部署环境，你最好尽快熟练它。Linux 的基本使用可以通过《鸟哥的Linux私房菜：基础学习篇（第三版）》学习，开发 bash shell 脚本可以参考《Linux Shell脚本攻略》。
+   - 掌握开发工具
+     - 熟练使用一种 IDE。Intellij IDEA或者 Eclipse 都可以，推荐使用前者。至少熟悉常用的快捷键，会 debug(包括远程 debug)项目。
+     - 熟悉一种编辑器。比如 Vim/Emacs/Sublime Text，至少学会搜索/替换/代码补全。
+   - 掌握 JDK 以外的常用类库和工具包。JDK 原生 API 在很多场景下使用并不方便。你需要掌握社区贡献的优秀类库和工具包，比如 apache commons、google guava 等，具体可以翻阅 [服务端技术选型 ](https://link.zhihu.com/?target=http%3A//xielong.me/2015/04/17/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/)的Utility 篇。
+   - 掌握 Web 开发框架。我们使用 Spring(或Rose) + Ibatis(或Jade) 开发 web 服务，你需要熟练掌握它们。
+   - 学习代码规范。我们大致上遵循 oracle 的 Java 语言编码规范，你可以先阅读并熟悉它。Code Formatting 文件在 git@xxx/coding-standard.git，在编写代码之前，请把它导入到 IDE 中。另外，确认 IDE 已经安装 Findbugs 和 CheckStyle 插件。
+   - 熟悉开发流程。我们的开发流程大致如下：功能开发->单元测试->功能测试->Code Review->集成测试->发布。确保你熟悉其中的每个环节。
+   - 其他。需要熟练使用版本控制工具 Git（阅读：《Git 权威指南》），以及项目构建工具 Maven（阅读：《Maven 实战》）。另外，在这个阶段可以尝试 TDD 开发。
+
+进阶（2-6 个月）
+
+- 目标：独立负责某个服务端项目。
+- 技能：
+  - 掌握 web 开发最佳实践，掌握 Restful API 设计，理解 Spring 原理。推荐阅读《Spring揭秘》。掌握项目分层、子模块划分。推荐阅读：《J2EE 核心模式》。
+  - 掌握 web 架构设计。包括 Http 反向代理，数据缓存，负载均衡，水平扩展和垂直扩展。推荐阅读：《分布式 Java 应用：基础与实践》。
+  - 掌握关系型数据库。包括设计 MySQL 表结构，根据业务特点分表分库，基于执行计划的 SQL 分析优化，以及数据库容量规划。推荐阅读：《MySQL 必知必会》、《高性能 MySQL》。
+  - 了解 NoSQL。我们大规模使用 Hadoop、HBase、Hive，同时部分项目使用 Redis、Storm。你需要学会这些工具最基本的使用。
+  - 学习 web 安全知识。了解 web 前端安全问题。设计安全 web 服务，包括加解密、防伪造、防重放攻击等。
+  - 掌握 Http (推荐阅读：《图解Http》、《http权威指南》)、Thrift 等协议。
+  - 掌握服务容量规划，性能调优，可靠性保证，以及故障处理。学习容量规划和性能调优知识，梳理业务监控点，熟练使用我们的监控报警系统。推荐阅读：《深入理解 Java 虚拟机》。
+  - 其他。设计模式：从项目中学习，有时间可以看看《深入浅出设计模式》、《JDK 里的设计模式》。学习Java Socket 编程与多线程知识，可以看看《Java 并发编程实战》，并翻翻并发编程网的文章。
+
+深入（6 个月-）
+
+- 目标：分布式系统和中间件开发。
+- 构建知识体系：《大型网站系统与 Java 中间件实践》、《大型网站技术架构：核心原理与案例分析》。
+- 原理与设计：《大规模存储式系统》、《UNIX 网络编程 卷1:套接字联网 API》、《How Tomcat Works》。
+- 学习开源项目：Apache Thrift、Zipkin、Netty、Rose、Jade、淘宝 RPC 系统 Dubbo 等。分析项目中的设计思路。比如，同样是RPC框架，Finagle 和 Dubbo 有什么异同。
+- 其他。根据参与的项目加深学习吧。比如，如果需要写 DSL，可以读一下《领域特定语言》，对 Redis 感兴趣推荐读一下：《Redis 设计与实现》。有两本书，无论做什么项目，都推荐读：《Unix 编程艺术》、《UNIX 环境高级编程(第3版)》。
+
 ## Tomcat
 
 参考博客:<https://www.cnblogs.com/jingmoxukong/p/8258837.html?utm_source=gold_browser_extension>
@@ -1187,3 +1240,1095 @@ controller **@Controller**
 #### 10.3动态代理
 
 底层实现就是反射
+
+
+
+### Spring复习
+
+bean标签就相当于创建了一个对象(new Hello())
+
+```xml
+<bean id="UserServiceImpl" class="com.kuang.service.UserServiceImpl">
+    <!--
+        ref：引用Spring容器中已经创建好的对象
+        value：具体的值，基本数据类型
+        -->
+    <property name="userDao" ref="mysqlImpl"></property>
+</bean>
+```
+
+bean中id就是对象名 class就是对象类型
+
+会利用实体类中的set方法去进行注入
+
+配置成功在spring中会有提示
+
+
+
+```xml
+<constructor-arg index="0" value=""/>1.下标赋值
+
+<constructor-arg type="java.lang.String" value="" />2.类型赋值。
+
+<constructor-arg name="name" value="" />3.参数名赋值
+```
+
+在配置文件加载的时候，容器中管理的对象就已经初始化了
+
+别名是给bean的id取的
+
+
+
+各种类型的属性如何在bean中设置
+
+```xml
+    <!--p命名空间注入，可以直接注入属性的值：property-->
+    <bean id="user" class="com.kuang.pojo.User" p:name="憨批" p:age="18"/>
+
+    <!--c命名空间注入，通过构造器注入：construct-args-->
+    <bean id="user2" class="com.kuang.pojo.User" c:age="18" c:name="憨批"/>
+```
+
+构造器注入和property区别？
+
+注意点：p和c命名空间不能直接使用，需要导入xml约束！
+
+```xml
+xmlns:p="http://www.springframework.org/schema/p"
+xmlns:c="http://www.springframework.org/schema/c"
+```
+
+
+
+bean的作用域
+
+1.代理模式 scope=singleton  同一个对象
+
+2.原型模式 scope=prototype 复制
+
+
+
+注解(适用简单情况)
+
+导入约束
+
+配置注解的支持 `<context:annot-config/>`在beans.xml中 (注解驱动的支持)
+
+@Autowired
+
+```java
+//如果显式定义了Autowired的required属性为false，说明这个对象可以为null，否则不允许为空
+    @Autowired(required = false)
+    private Dog dog;
+    @Autowired
+    private Cat cat;
+```
+
+通过扫描来指定要生效注解的包
+
+```xl
+<context:component-scan base-package="com.lyy.pojo"/>
+```
+
+@Component等价于
+
+```xml
+<bean id="user" class="com.lyy.pojo.User"/>
+```
+
+```
+@Component
+public class User{
+	public String name ="lyy"；
+}
+```
+
+```java
+@Component
+public class User{
+    @Value("lyy")
+    //类似 <property name="name" value="lyy"/>
+	public String name；
+}
+```
+
+在set方法上面@Value也能用
+
+
+
+执行顺序不同：@Autowired通过byType的方式实现，@Resource默认通过byName的方式实现。
+
+如果@Autowired自动装配的环境比较复杂，自动装配无法通过一个注解@Autowired完成的时候，我们可以使用@Qualifier(value="xxx")去配置@Autowired的使用，指定一个唯一的bean对象注入！
+
+衍生的注解
+
+@Component有几个衍生注解，我们在web开发中，会按照mvc三层架构分层！
+
+- dao【@Repository】
+- service【@Service】
+- controller【@Controller】
+
+这四个注解功能都是一样的，都是代表将某个类注册到Spring中，装配
+
+
+
+@Scope 作用域
+
+如@Scope(“singleton”)
+
+
+
+### 10 代理模式
+
+####  10.2 动态代理
+
+分为两大类:基于接口的动态代理,基于类的动态代理
+
+基于接口 JDK动态代理
+
+需要了解的两个类Proxy 代理 InvocationHandler 调用处理程序
+
+底层实现就是反射
+
+Proxy用于生成动态代理实例
+
+InvocationHandler 调用处理程序处理并且返回结果
+
+好处:
+
+一个动态代理类可以代理多个类，只要是实现了同一个接口即可
+
+代理的是一个业务
+
+
+
+## 11、 AOP
+
+### 11.1 什么是AOP
+
+AOP（Aspect Oriented Programming）意为：面向切面编程，通过预编译方式和运行期动态代理实现程序功能的统一维护的一种技术。AOP是OOP的延续，是软件开发中的一个热点，也是Spring框架中的一个重要内容，是函数式编程的一种衍生泛型，利用AOP可以对业务逻辑的各个部分进行隔离，从而使得业务逻辑各部分之间的耦合度降低，提高程序的可重用性，同时提高了开发的频率。
+
+![image-20200106085441897](D:/software/javaStudy/Spring狂神说/image-20200106085441897.png)
+
+### 11.2 AOP在Spring中的作用
+
+==提供声明式事务；允许用户自定义切面==
+
+- 横切关注点：跨越应用程序多个模块的方法或功能。即是，与我们业务逻辑无关的，但是我们需要关注的部分，就是横切关注点，如日志、安全、缓存、事务等等……
+- 切面（ASPECT）：横切关注点被模块化的特殊对象，即是一个类。
+- 通知（Advice）：切面必须要完成的工作，即是类中的一个方法。
+- 目标（Target）：被通知对象。
+- 代理（Proxy）：向目标对象应用通知之后创建的对象。
+- 切入点（PointCut）：切面通知执行的“地点”的定义。
+- 连接点（jointPoint）：与切入点匹配的执行点。
+
+![image-20200106090325307](D:/software/javaStudy/Spring狂神说/image-20200106090325307.png)
+
+SpringAOP中，通过Advice定义横切逻辑，Spring中支持5种类型的Advice：
+
+![image-20200106090428369](D:/software/javaStudy/Spring狂神说/image-20200106090428369.png)
+
+即AOP在不改变原有代码的情况下，去增加新的功能。
+
+### 11.3 使用Spring实现AOP
+
+【重点】使用AOP织入，需要导入一个依赖包。
+
+```xml
+<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
+<dependency>
+    <groupId>org.aspectj</groupId>
+    <artifactId>aspectjweaver</artifactId>
+    <version>1.9.5</version>
+</dependency>
+```
+
+还需要导入aop的约束
+
+代理基于接口
+
+##### *execution*表达式
+
+
+
+获得签名signature就是类的信息？
+
+cglib代理基于类
+
+## 12、 整合Mybatis
+
+步骤：
+
+1. 导入相关jar包
+   - junit
+   - Mybatis
+   - mysql数据库
+   - spring相关的
+   - aop织入
+   - mybatis-spring【new知识点】
+2. 编写配置文件
+3. 测试
+
+
+
+好处，spring-dao.xml中内容固定，不用每次都写测试类中的内容
+
+之所以要多一个实现类 就是因为Mybatis的对象spring不能自动创建
+
+### 12.2 Mybatis-Spring
+
+1. 编写数据源配置
+2. sqlSessionFactory
+3. sqlSessionTemplate
+4. 需要给接口加实现类
+5. 将自己写的实现类，注入到Spring中
+6. 测试
+
+
+
+sqlSessionTemplate是线程安全的，所以可以代替sqlSession
+
+
+
+#### 实现的第二种方法
+
+
+
+
+
+## Spring MVC
+
+#### 回顾MVC架构
+
+##### 什么是mvc
+
+pojp类是Plain OrdinaryJava Object的缩写
+
+可以当作简单的Java对象
+
+实际就是普通JavaBeans
+
+MVC是模型(Model),视图(View),控制器(Controller)的简写，是一种软件设计规范
+
+vo也是实体类不过是细分了拆掉了一些不必要的东西
+
+#### tomcat
+
+https://www.cnblogs.com/Knowledge-has-no-limit/p/7240585.html
+
+依赖里记得添加lib，否则可能会404
+
+#### 复习servlet
+
+先写个类继承servlet，再在web.xml中配置servlet
+
+用户可见页面放在web下面,用户不可见放在web-inf下面
+
+
+
+void getSession()方法相当于得到一个session对象，而void setAttribute()和String Attribute分别是对属性赋值和得到属性值的方法。
+
+
+
+写完servlet记得去web.xml注册
+
+
+
+POJO DO是data object的缩写 是数据对象的意思，一般和数据库中的表相对应
+
+如果使用mybatis开发，则不需要注解修饰，只需要简单的Java对象就可以。
+
+DAO 是data access object的缩写，是数据访问对象的意思
+
+如果使用mybatis开发，一般放在mapper包中，同样是接口形式，接口使用@Select, @Update, @Insert, @Delete等注解修饰，在注解中手写SQL完成增删改查等常用操作。
+
+DTO 是data transfe object的缩写，意思是数据传输对象，会放在dto包
+
+用在service层，service层一般会调用dao中定义的方法获取DO对象
+
+完成业务逻辑后，如果需要返回对象时，会把对象组合或者转化为DTO对象向外传输。转化过程一般使用spring提供的BeanUtils类的copyproperties方法把DO对象的属性复制到DTO对象里。
+
+VO是view objexct的缩写，意思是视图对象，用于展示数据给用户，用在controller层，是controller向外传输的对象controller中一般会调用service层中类的方法获取DTO对象，然后转化为VO对象返回给调用端。
+
+
+
+Java视图 就是将集合类对象中的数据重新映射到一个数据集合中
+
+
+
+通过调度来管理多个servlet，转发,处理请求
+
+
+
+##### 错误
+
+Intellij idea 报错：Error : java 不支持发行版本5
+
+maven报错：不再支持源选项 5。请使用 6 或更高版本。
+
+tomcat中文乱码
+
+6、在 tomcat / conf 目录下，设置 logging.properties ，增加参数  java.util.logging.ConsoleHandler.encoding = GBK，重启后终于可以了，总算松了口气。
+
+https://www.cnblogs.com/shej123/p/10312806.html
+
+project structure中的artifact中在web-inf中添加lib并且导入所有包来解决404
+
+新问题:注意复制文档的内容可能会遗漏-，要注意复制问题
+
+### springmvc原理
+
+组件扫描完成后开始执行bean的实例化
+
+
+
+一般会去配一个站点 在Tomcat里
+
+
+
+真正只需要去做Spring mvc中的调用业务和如何进行视图解析就是路径如何拼接
+
+第一步:确定有依赖maven和artifacts的WEB-INF中的lib
+
+web.xml配置dispatcherservlet
+
+springmvc-servlet.xml配置mappinghandler和视图解析器
+
+上面两个基本不改动
+
+然后在controller里写controller
+
+
+
+model和modelViewer的区别
+
+
+
+改了配置文件就得重新发布tomcat,改了前端则无所谓
+
+
+
+
+
+#### requestMapping
+
+一般只会在方法名上写
+
+
+
+#### RestFul 风格
+
+RestFul风格就是一个资源定位及资源操作的风格。基于这个风格设计的软件可以更简洁，更有层次，更易于实现缓存等机制
+
+**传统方式操作资源**：通过不同的参数来实现不同的效果
+
+**使用Restful操作资源:**
+
+可以通过不同的请求方式来实现不同的资源
+
+如
+
+```java
+//    http://localhost:8080/springmvc03_war_exploded/add1/2/3
+    @RequestMapping("/add1/{a}/{b}")
+    public String test2(@PathVariable int a,@PathVariable int b, Model model){
+        int result=a+b;
+        model.addAttribute("msg","结果是"+result);
+        return "hello";
+    }
+```
+
+类型不对则会报400错误
+
+
+
+**使用method属性指定请求类型**
+
+用于约束请求的类型，可以收窄请求范围。指定请求谓词的类型如GET, POST, HEAD, OPTIONS, PUT,PATCH, DELETE, TRACE等 
+
+`@RequestMapping(value = "/add1/{a}/{b}",method = RequestMethod.GET)`
+
+不写的话默认是get
+
+@GetMapping是一个组合注释相当于
+
+```java
+@RequestMapping(method = RequestMethod.GET)
+```
+
+
+
+#### 重定向和转发
+
+视图解析器的目的是为了实现跳转，实际上也可以通过HttpServletRequest去实现
+
+使用springmvc去写则要去写全限定名（相对于web文件夹）
+
+加了视图解析器的情况下默认是转发
+
+需要重定向则写return "redirect:/index.jsp";即可（写了拼接就会拼接）
+
+
+
+#### 数据处理
+
+提交的域名称域处理方法的参数名不一致
+
+提交数据 : http://localhost:8080/hello?username=lyy
+
+```java
+RequestMapping("/hello")
+public String hello(@RequestParam("username") String name){
+System.out.println(name);
+return "hello";
+}
+```
+
+##### 提交的是一个对象
+
+要求提交的表单域和对象的属性名一致，参数使用对象即可
+
+1. 实体类
+
+   ```java
+   public class User {
+   private int id;
+   private String name;
+   private int age;
+   //构造
+   //get/set
+   //tostring()
+   }
+   ```
+
+   
+
+2. 提交数据 : http://localhost:8080/mvc04/user?name=kuangshen&id=1&age=15
+
+3. 处理方法  
+
+```java
+public String user(User user){
+    System.out.println(user);
+    return "hello";
+}
+```
+
+后台输出 : User { id=1, name='kuangshen', age=15 } 
+
+说明：如果使用对象的话，前端传递的参数名和对象名必须一致，否则就是nu l；？
+
+
+
+##### 数据显示到前端
+
+第一种:通过ModelAndView
+
+第二种:通过ModelMap
+
+Modelmap model
+
+model.addAttribute("name",name);
+
+第三种：通过Model
+
+
+
+和第二种区别？
+
+```
+Model 只有寥寥几个方法只适合用于储存数据，简化了新手对于Model对象的操作和理解；
+ModelMap 继承了 LinkedMap ，除了实现了自身的一些方法，同样的继承 LinkedMap 的方法和特性
+
+```
+
+
+
+##### 乱码问题
+
+以前乱码问题通过过滤器解决 , 而SpringMVC给我们提供了一个过滤器 , 可以在web.xml中配置 .
+修改了xml文件需要重启服务器 
+
+```xml
+<filter>
+<filter-name>encoding</filter-name>
+<filterclass>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+<init-param>
+<param-name>encoding</param-name>
+<param-value>utf-8</param-value>
+</init-param>
+</filter>
+<filter-mapping>
+<filter-name>encoding</filter-name>
+<url-pattern>/*</url-pattern>
+</filter-mapping>
+```
+
+但是我们发现 , 有些极端情况下.这个过滤器对get的支持不好 .
+处理方法 :
+
+修改tomcat配置文件 ： 设置编码！ 
+
+```xml
+<Connector URIEncoding="utf-8" port="8080" protocol="HTTP/1.1"
+connectionTimeout="20000"
+redirectPort="8443" />
+
+```
+
+
+
+### Json
+
+//produces:指定响应体返回类型和编码
+@RequestMapping(value = "/json1",produces =
+"application/json;charset=utf-8") 
+
+解决乱码问题
+
+上一种方法比较麻烦，如果项目中有许多请求则每一个都要添加，可以通过Spring配置统一指定，这样
+就不用每次都去处理了！
+我们可以在springmvc的配置文件上添加一段消息StringHttpMessageConverter转换配置！ 
+
+加在springmvc-servlet.xml
+
+```xml
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <bean
+                    class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8"/>
+            </bean>
+            <bean
+                    class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="objectMapper">
+                    <bean
+                            class="org.springframework.http.converter.json.Jackson2ObjectMapperFactoryBean">
+                        <property name="failOnEmptyBeans" value="false"/>
+                    </bean>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+```
+
+
+
+#### 输出时间对象
+
+```java
+@RequestMapping("/json3")
+public String json3() throws JsonProcessingException {
+ObjectMapper mapper = new ObjectMapper();
+//创建时间一个对象，java.util.Date
+Date date = new Date();
+//将我们的对象解析成为json格式
+String str = mapper.writeValueAsString(date);
+return str;
+}
+```
+
+默认日期格式会变成一个数字，是1970年1月1日到当前日期的毫秒数！
+Jackson 默认是会把时间转成timestamps形式 
+
+
+
+```java
+@RequestMapping("/json4")
+public String json4() throws JsonProcessingException {
+ObjectMapper mapper = new ObjectMapper();
+//不使用时间戳的方式
+mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+//自定义日期格式对象
+SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//指定日期格式
+mapper.setDateFormat(sdf);
+Date date = new Date();
+String str = mapper.writeValueAsString(date);
+return str;
+}
+```
+
+
+
+#### 返回json字符串统一解决
+
+在类上直接使用@RestController,这样，里面所有的方法都只会返回json字符串了
+
+
+
+### ssm整合学习
+
+#### 1.整合mybatis
+
+comment 可添加字段和数据库的注释	
+
+查看已有表的所有字段的注释呢？
+
+show full columns from test
+
+```xml
+像刚才的 JavaBean，User 是放在 cn.com.mybatis.pojo 包里的，包里可能也会存在其他多个 JavaBean，这时候一个一个配置别名就会很麻烦，这时候就需要批量定义别名，批量指定很简单，只要指定包名即可，之后程序会为包下的所有类都自动加上别名，其定义别名的规范就是对应包装类的类名首字母变为小写，其示例代码如下：
+
+<typeAliases>
+    <package name="cn.com.mybatis.pojo"/>
+</typeAliases>
+```
+
+pojo中的类的属性的名和mysql中字段一致可智能提醒
+
+步骤:
+
+
+
+pojo实体类
+
+BookMapper.class是写接口类
+
+BookMapper.xml是写实现类？
+
+@Select代替简单的xml中sql语句？
+
+然后绑定到mybatis-config.xml中
+
+service层去调用dao层，就是实现aop，组合dao层
+
+在service层注入mapper
+
+@Param作用 在方法参数的前面写上@Param("参数名")表示给参数命名，名称就是括号中的内容
+
+
+
+public Student select(@Param("aaaa") String name,@Param("bbbb")int class_id);
+
+　　给入参 String name 命名为aaaa，然后sql语句....where  s_name= #{aaaa} 中就可以根据aaaa得到参数值了。
+
+```xml
+public List<student> selectuser(@Param(value = "page")int pn ,@Param(value = "st")student student);
+
+<select id="selectuser" resultType="com.user.entity.student">
+    SELECT * FROM student
+    where sname like concat(concat("%",#{st.sname}),"%")
+    LIMIT #{page} ,5
+</select>
+```
+
+注意#{}中的名和对象中属性名一致就可以不用写st.sname，而是写sname即可
+
+
+
+@Autowired
+
+就是自动装配，其作用是代替Java代码里面的getter/setter与bean属性中的property.
+
+@Autowired(required=false)
+
+
+
+@Qualifier用法
+
+@Autowired就是写在属性上实现getterh和setter
+
+在Controller中需要注入service那么我的这个server有两个实现类要如何区分？
+
+下面上铺垫图
+
+![一个业务接口](https://img-blog.csdn.net/20180607160315730?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2NTY3MDA1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+请忽略我的红线
+![第一个实现类](https://img-blog.csdn.net/20180607160405182?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2NTY3MDA1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+![第二个实现类](https://img-blog.csdn.net/20180607160421650?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2NTY3MDA1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+
+\##在Controller中使用 @Autowired注入时
+
+![autowired注入资源](https://img-blog.csdn.net/20180607160709653?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2NTY3MDA1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+**Qualifier的意思是合格者，通过这个标示，表明了哪个实现类才是我们所需要的，添加@Qualifier注解，需要注意的是@Qualifier的参数名称为我们之前定义@Service注解的名称之一。**
+
+#### 2.整合spring层
+
+使用@Resource注入时
+
+![@resource注入](https://img-blog.csdn.net/20180607161307722?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM2NTY3MDA1/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
+使用@resource注入时比较简单了注解自带了“name”的val就是@Service注解的名称之一。
+
+
+
+##### 流程思考：
+
+return可以把model带过来？
+
+业务层都是在前端页面发数据后才处理？
+
+重定向toAddBook就是调到toAddBook对应的业务层
+
+该业务层return "addBook"就经过解析器解析跳转到addBook.jsp
+
+```html
+    <form action="${pageContext.request.contextPath}/book/addBook"
+          method="post">
+```
+
+然后通过响应再调用业务层addBook处理，最后redirect:/book/allBooks返回adllBooks页面
+
+
+
+
+
+## SpringBoot
+
+还是得先学springmvc
+
+核心：自动装配原理
+
+约定大于配置
+
+微服务间可以通过http或rpc来进行通信
+
+/ 只匹配所有的请求，不会去匹配jsp页面
+
+/* 匹配所有的请求，包括jsp页面
+
+
+
+可以写多个controller从而复用网页资源，只用改动参数
+
+#### 第一个SpringBoot
+
+问题1：要挂梯子，不然创建会网络超时
+
+问题2：最好别用最新的springboot，否则阿里云源没有
+
+只会扫描主程序入口同级的包
+
+
+
+@RestController
+
+　json字符串：如果某个类设计初衷就是返回json字符串，那么该类就可以使用`@Controller + @ResponseBody`，还可以使`@RestCotroller`简化书写
+
+　从上面的源码中可以清晰的看到`@RestController = @Controller + @ResponseBody`
+
+pom.xml中配置
+
+springboot的其他组件可以不写版本号，因为会继承父依赖
+
+
+
+#### springboot自动装配
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+```
+
+spring-boot-starter-xxx就是spring-boot的场景启动器
+
+如spring-boot-starter-web 帮我们导入了web模块正常运行所依赖的组件
+
+所有的自动配置类都在META-INF/spring.factories：所有的自动配置类都在这里了
+
+问题:这么多自动配置为什么有一些没有生效，需要导入对应的start才有用
+
+核心注解@ConditionalOnXXX:如果这个里面的条件都满足，才会生效
+
+![1585569935004](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1585569935004.png)
+
+![1585570275578](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1585570275578.png)
+
+#### run方法执行分析
+
+SpringApplication类作用
+
+1.推断应用的类型是普通的项目还是Web项目（普通项目运行完直接结束，二Web项目不是）
+
+2.查找并加载所有可用初始化器，设置到Initializers属性中
+
+3.找出所有的应用程序监听器，设置到listeners属性中
+
+4.推断并设置main方法的定义类，找到运行的主类
+
+![img](https://mmbiz.qpic.cn/mmbiz_png/uJDAUKrGC7L1vFQMnaRIJSmeZ58T2eZicjafiawQLp9u8wc4ic1Mjy6OyfibzfjVofeL5pnS1NSFKVjlIg6neI9ySg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+关于SpringBoot，谈谈你的理解
+
+1.自动装配 
+
+2.run方法
+
+
+
+#### yaml语法
+
+https://mp.weixin.qq.com/s?__biz=Mzg2NTAzMTExNg==&mid=2247483744&idx=1&sn=b4ec762e71b2ddf9403c035635299206&scene=19#wechat_redirect
+
+基础语法：
+
+空格不能省略（即k: v）中间有空格
+
+以缩进来控制层级关系，只要是左边对齐的一列数据都是同一个层级的
+
+属性和值的大小写都是敏感的
+
+```yaml
+#普通的key-value
+name: qinjiang
+#对象
+student:
+	name: qinjiang
+	age: 3
+#行内写法
+student: {name:qinjiang,age:3}
+
+#数组
+pets:
+ - cat
+ - dog
+ - pig
+ 
+ pets: [cat,dog,pig]
+```
+
+
+
+yaml可以直接给实体类赋值
+
+在属性上写@Value("旺财")
+
+private String name;
+
+https://docs.spring.io/spring-boot/docs/2.1.9.RELEASE/reference/html/configuration-metadata.html#configuration-metadata-annotation-processor
+
+可查看@ConfigurationProperties
+
+在application.yaml里写对象赋值
+
+然后在实体类上写@ConfigurationProperties(prefix = "person")
+
+记得还要些@Component
+
+然后在测试类的属性上写@Autowired即可完成赋值
+
+mybatis的配置也可以用yaml来配置
+
+
+
+#### 加载指定的配置文件
+
+**@PropertySource ：**加载指定的配置文件；
+
+**@configurationProperties**：默认从全局配置文件中获取值；
+
+1、我们去在resources目录下新建一个**person.properties**文件
+
+```
+name=kuangshen
+```
+
+2、然后在我们的代码中指定加载person.properties文件
+
+
+
+```java
+@PropertySource(value = "classpath:person.properties")
+@Component //注册bean
+public class Person {
+
+    @Value("${name}")
+    private String name;
+
+    ......  
+}
+```
+
+3、再次输出测试一下：指定配置文件绑定成功！
+
+##### 配置文件占位符
+
+配置文件还可以编写占位符生成随机数
+
+```yaml
+
+person:
+    name: qinjiang${random.uuid} # 随机uuid
+    age: ${random.int}  # 随机int
+    happy: false
+    birth: 2000/01/01
+    maps: {k1: v1,k2: v2}
+    lists:
+      - code
+      - girl
+      - music
+    dog:
+      name: ${person.hello:other}_旺财
+      age: 1
+```
+
+还可以这样写@Value
+
+```java
+
+@Component //注册bean
+@PropertySource(value = "classpath:user.properties")
+public class User {
+    //直接使用@value
+    @Value("${user1.name}") //从配置文件中取值
+    private String name;
+    @Value("#{9*2}")  // #{SPEL} Spring表达式
+    private int age;
+    @Value("男")  // 字面量
+    private String sex;
+}
+```
+
+##### 对比小结
+
+![img](https://mmbiz.qpic.cn/mmbiz_png/uJDAUKrGC7KtjyIb9NEaYlz0tCWSiboOYjMibiaov73iaTsiaWEPoArDcAB1Ooibx9uR5JxtacIuicHblEtUI9SrySX2A/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+1、@ConfigurationProperties只需要写一次即可 ， @Value则需要每个字段都添加
+
+2、松散绑定：这个什么意思呢? 比如我的yml中写的last-name，这个和lastName是一样的， - 后面跟着的字母默认是大写的。这就是松散绑定。可以测试一下
+
+即在yaml中last-name和class中lastName是一样的
+
+3、JSR303数据校验 ， 这个就是我们可以在字段是增加一层过滤器验证 ， 可以保证数据的合法性
+
+4、复杂类型封装，yml中可以封装对象 ， 使用value就不支持
+
+
+
+只需要一个值一般用@Value，其他情况用@ConfigurationProperties多
+
+
+
+#### JSR303校验
+
+Springboot中可以用@validated来校验数据，如果数据异常则会统一抛出异常，方便异常中心统一处理。我们这里来写个注解让我们的name只能支持Email格式；
+
+```java
+
+@Component //注册bean
+@ConfigurationProperties(prefix = "person")
+@Validated  //数据校验
+public class Person {
+
+    @Email(message="邮箱格式错误") //name必须是邮箱格式
+    private String name;
+}
+```
+
+运行结果 ：default message [不是一个合法的电子邮件地址];
+
+![img](https://mmbiz.qpic.cn/mmbiz_png/uJDAUKrGC7IPEXZtUAUBhnSZvUmrPzbDYdR5f05BDysj0YVJMxadN0psDJKzXe7zyTrL9wFpTEHoiba0MsM11Fw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+**使用数据校验，可以保证数据的正确性；**
+
+```java
+
+@NotNull(message="名字不能为空")
+private String userName;
+@Max(value=120,message="年龄最大不能查过120")
+private int age;
+@Email(message="邮箱格式错误")
+private String email;
+
+空检查
+@Null       验证对象是否为null
+@NotNull    验证对象是否不为null, 无法查检长度为0的字符串
+@NotBlank   检查约束字符串是不是Null还有被Trim的长度是否大于0,只对字符串,且会去掉前后空格.
+@NotEmpty   检查约束元素是否为NULL或者是EMPTY.
+    
+Booelan检查
+@AssertTrue     验证 Boolean 对象是否为 true  
+@AssertFalse    验证 Boolean 对象是否为 false  
+    
+长度检查
+@Size(min=, max=) 验证对象（Array,Collection,Map,String）长度是否在给定的范围之内  
+@Length(min=, max=) string is between min and max included.
+
+日期检查
+@Past       验证 Date 和 Calendar 对象是否在当前时间之前  
+@Future     验证 Date 和 Calendar 对象是否在当前时间之后  
+@Pattern    验证 String 对象是否符合正则表达式的规则
+
+.......等等
+除此以外，我们还可以自定义一些数据校验规则
+```
+
+#### 多环境切换
+
+![1585586380098](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1585586380098.png)
+
+classpath指java或者resources
+
+这个顺序就是优先级顺序
+
+**SpringBoot会从这四个位置全部加载主配置文件；互补配置；**
+
+**例如：**
+
+application-test.properties 代表测试环境配置
+
+application-dev.properties 代表开发环境配置
+
+但是Springboot并不会直接启动这些配置文件，它**默认使用application.properties主配置文件**；
+
+我们需要通过一个配置来选择需要激活的环境：
+
+```properties
+#application.properties中写
+spring.profiles.active = dev
+#即可切换到application-dev.properties这个配置
+```
+
+和properties配置文件中一样，但是使用yml去实现不需要创建多个配置文件
+
+```yaml
+server:
+  port: 8081
+#选择要激活那个环境块
+spring:
+  profiles:
+    active: prod
+
+---
+server:
+  port: 8083
+spring:
+  profiles: dev #配置环境的名称
+
+
+---
+
+server:
+  port: 8084
+spring:
+  profiles: prod  #配置环境的名称
+```
+
+分割线分割多个环境？
+
+
+
+#### 自动配置原理再理解
+
+**我们可以通过启用 debug=true属性；来让控制台打印自动配置报告，这样我们就可以很方便的知道哪些自动配置类生效；**
+
+
+
+```properties
+#开启springboot的调试类
+debug=true
+```
+
+**Positive matches:（自动配置类启用的：正匹配）**
+
+**Negative matches:（没有启动，没有匹配成功的自动配置类：负匹配）**
+
+**Unconditional classes: （没有条件的类）**
+
+![image-20200331111805842](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200331111805842.png)
+
+### SpringBoot Web开发

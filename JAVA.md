@@ -1057,3 +1057,259 @@ Map.Entry 是Map中的一个接口，他的用途是表示一个映射项
 
 ## 组合模式
 
+
+
+## 反射
+
+我们可以利用反射机制来获得类似动态语言的特性
+
+![1583670066572](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583670066572.png)
+
+反射机制允许程序在执行期借助于Reflection API来取得任何类的内部信息,
+
+并能直接操作任意对象的内部属性及方法
+
+![1583672232087](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583672232087.png)
+
+优点:可以实现动态创建对象和编译,体现出很大的灵活性
+
+缺点:对性能有影响.使用反射基本上是一种解释操作，但是这类操作总是慢于直接执行相同操作
+
+一个类在内存中只有一个class对象
+
+一个类被加载后,类的整个结构都会被封装在Class对象中
+
+类的整个结构包括某个类的属性,方法和构造器
+
+一个Class对象对应的是一个加载到JVM中的一个class文件
+
+### Class常用的方法
+
+![1583675452332](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583675452332.png)
+
+### 获取Class类的实例
+
+```java
+Class clazz = Person.class;
+Class clazz = person.getClass();
+Class clazz = Class.forName("demo01,Student");
+```
+
+![1583676017951](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583676017951.png)
+
+### 所有类型的Class对象
+
+![1583677331181](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583677331181.png)
+
+只要元素类型与维度一样,就是同一个Class
+
+### 类加载内存分析
+
+![1583677653091](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583677653091.png)
+
+![1583678194659](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583678194659.png)
+
+![1583678355946](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583678355946.png)
+
+静态代码快和静态变量的执行先后顺序取决于代码编写的顺序
+
+example解释
+
+1.加载到内存,会产生一个类对应Class对象
+
+2.链接 链接结束后m=0
+
+3.初始化
+
+<clinit>(){
+
+​	System.out.println("");
+
+m=300;
+
+m=100;
+
+} 
+
+m=100;//合并了
+
+### 分析类的初始化
+
+#### 什么时候会发生类的初始化
+
+![1583679281062](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583679281062.png)
+
+触发主动引用的不同情况只会初始化一次
+
+上述操作在初始化阶段才实现
+
+### 类加载器的作用
+
+![1583680454193](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583680454193.png)
+
+![1583680618113](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583680618113.png)
+
+```java
+ System.out.println(System.getProperty("java.class.path"));
+```
+
+如何获得系统类加载器可以加载的路径
+
+**双亲委派机制**
+
+用于检测安全性，保证自己写的类不和根类重复
+
+
+
+### 创建运行时类的对象
+
+```java
+package com.lyy.reflection;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+
+public class Test06 {
+    public static void main(String[] args) throws ClassNotFoundException, NoSuchFieldException, NoSuchMethodException {
+        Class c1 = Class.forName("com.lyy.reflection.User");
+        User user = new User();
+        c1=user.getClass();
+        System.out.println(c1.getName());//获得包名加类名
+        System.out.println(c1.getSimpleName());//获得类名
+        //获得类的属性
+        //Field[] fields = c1.getFields();//不能获得私有变量,需要getDeclaredFields
+        Field[] fields = c1.getDeclaredFields();//获得全部属性
+        for (Field field : fields
+             ) {
+            System.out.println(field);
+        }
+        //获得指定属性的值
+        Field name = c1.getDeclaredField("name");
+        System.out.println(name);
+        //获得类的方法
+        Method[] methods = c1.getMethods();//获得本类和父类的所有public方法
+        for (Method method:methods
+             ) {
+            System.out.println(method);
+        }
+        System.out.println("");
+        methods = c1.getDeclaredMethods();//本类的所有方法
+        for (Method method:methods
+        ) {
+            System.out.println(method);
+
+        }
+        //获得指定方法
+        Method getName = c1.getMethod("getName");
+        Method setName = c1.getMethod("setName", String.class);
+        System.out.println(getName);
+        System.out.println(setName);
+        //获得构造器
+    }
+
+}
+`
+```
+
+### 动态创建对象执行
+
+![1583721260511](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583721260511.png)
+
+**Java9 Class类 newInstance 过时**
+
+```
+Class.forName("类的全限定名").newInstance();
+1
+```
+
+被替换为
+
+```java
+Class.forName("类的全限定名").getDeclaredConstructor().newInstance();
+```
+
+```java
+package com.lyy.reflection;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+public class Test07 {
+    public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException, NoSuchFieldException {
+        Class c1 = Class.forName("com.lyy.reflection.User");
+        User user = (User) c1.newInstance();//不推荐使用？
+        System.out.println(user);
+        //推荐方式
+
+        //通过反射获取一个方法
+        User user1 =(User)c1.getDeclaredConstructor(String.class,int.class,int.class).newInstance("lyy",2017,18);
+        System.out.println(user1);
+        Method setName = c1.getDeclaredMethod("setName", String.class);
+        setName.invoke(user1,"newlyy");//("对象,方法的值)
+        System.out.println(user1);
+
+        System.out.println("");
+        Field name=c1.getDeclaredField("name");
+        //不能直接操作私有属性，需要关闭安全检测
+        name.setAccessible(true);//设置是否可以访问直接set是没用权限的,true为可访问
+        name.set(user1,"newlyy1");
+        System.out.println(user1);
+    }
+
+
+}
+
+```
+
+![1583722698474](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583722698474.png)
+
+![1583722780585](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583722780585.png)
+
+### 性能对比分析
+
+```java
+获取运行时间
+long startTime = System.currentTimeMills();
+long endTime = System.currentTimeMills();
+System.out.println(endTime-startTime+"ms");
+```
+
+![1583723201844](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583723201844.png)
+
+结论:频繁执行的反射代码建议关闭安全性检查
+
+### 反射操作泛型
+
+![1583724947185](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583724947185.png)
+
+### 反射操作注解
+
+![1583725541553](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1583725541553.png)
+
+### 什么是注解
+
+
+
+### 内置注解
+
+
+
+### 元注解
+
+
+
+### 自定义注解
+
+
+
+## IDEA
+
+ctrl alt u可生成class的uml图
+
+event log调出？点击左下角可以调出
+
+upd快捷打出update
+
+### IDEA操作事务
+

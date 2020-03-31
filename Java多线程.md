@@ -119,3 +119,222 @@ Worker Thread
 对线程进行监视的主要途径是获取并查看程序的线程转储.
 
 ![1583089492180](/home/lyy/.config/Typora/typora-user-images/1583089492180.png)
+
+
+
+# Java多线程 基于kuangshen视频
+
+![1584958217688](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1584958217688.png)
+
+
+
+#### 实现Runnable接口
+
+![1584965624367](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1584965624367.png)
+
+```java
+public class ThreadTest02 implements Runnable{
+    @Override
+    public void run(){
+        for (int i=0;i<20;i++){
+            System.out.println("*run:"+i);
+        }
+    }
+    public static void main(String[] args) {
+        //创建Runnable接口的实现类对象
+        ThreadTest02 t1 = new ThreadTest02();
+        //创建线程对象，通过线程对象来开启我们的线程
+        Thread thread = new Thread(t1);
+        thread.start();
+        for (int i=0;i<1000;i++){
+            System.out.println("main:"+i);
+        }
+    }
+}
+```
+
+通过接口可以实现多个线程只用到一个对象做参数？
+
+
+
+#### 实现Callable接口
+
+![1584968237987](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1584968237987.png)
+
+```java
+package com.lyy.demo01;import org.apache.commons.io.FileUtils;import java.io.File;import java.io.IOException;import java.net.URL;import java.util.concurrent.*;//线程可以返回值，可以抛出异常public class 
+
+TestThread01_1 implements Callable<Boolean> {    private String url;    private String name;    public TestThread01_1(String name, String url) {        this.name = name;        this.url = url;    }    @Override    public Boolean call(){        WebDowanloader webDowanloader = new WebDowanloader();        webDowanloader.downloader(url,name);        System.out.println("下载的文件名为:"+name);        return true;    }    public static void main(String[] args) throws ExecutionException, InterruptedException {        TestThread01_1 t1 = new TestThread01_1("1.jpg", "http://pic3.zhimg.com/v2-f271c95882a85a77d5c9cbe3743bb16a_1200x500.jpg");        TestThread01_1 t2 = new TestThread01_1("2.jpg", "http://pic3.zhimg.com/v2-f271c95882a85a77d5c9cbe3743bb16a_1200x500.jpg");        TestThread01_1 t3 = new TestThread01_1("3.jpg", "http://pic3.zhimg.com/v2-f271c95882a85a77d5c9cbe3743bb16a_1200x500.jpg");//创建执行服务        ExecutorService ser= Executors.newFixedThreadPool(3);//通过服务提交执行  
+Future<Boolean> result1 = (Future<Boolean>) ser.submit(t1);        Future<Boolean> result2 = (Future<Boolean>) ser.submit(t2);        Future<Boolean> result3 = (Future<Boolean>) ser.submit(t3);        //获取call方法运行完的返回值结果        
+boolean r1 = result1.get();        boolean r2 = result2.get();        boolean r3 = result3.get();        //关闭服务       
+ser.shutdownNow();    }    class WebDowanloader{        public void downloader(String url,String name){            try {                FileUtils.copyURLToFile(new URL(url),new File(name));            } catch (IOException e) {                e.printStackTrace();                System.out.println("IO exception，downloader method error");            }        }}}
+```
+
+
+
+#### 静态代理模式
+
+静态代理模式总结:真实对象和代理对象都要实现同一个接口
+
+代理对象要代理真实角色
+
+
+
+new Thread().start()；就是实现的代理模式
+
+
+
+### 线程的状态
+
+![1584970514242](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1584970514242.png)
+
+![1584970579589](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1584970579589.png)
+
+![1584970723620](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1584970723620.png)
+
+#### 线程停止
+
+
+
+![1584970854141](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1584970854141.png)
+
+
+
+
+
+false后run()中内容就直接跳到结尾了
+
+1.建议线程正常停止---->利用次数，不建议死循环
+
+2.建议使用标志位---->设置一个标志位
+
+```java
+package com.lyy.state;
+
+public class TestStop implements Runnable{
+ int i=0;
+    //设置一个标志位
+    private boolean flag=true;
+    public void run(){
+    int i=0;
+    while (flag){
+        System.out.println("run Thread"+i++);
+    }
+    }
+//2.设置一个公开的方法停止线程,转换标志位
+public void stop(){
+        this.flag = false;
+}
+
+    public static void main(String[] args) {
+        TestStop testStop = new TestStop();
+        new Thread(testStop).start();
+
+        for (int i = 0; i < 1000; i++) {
+            System.out.println("main"+i);
+            if (i == 800) {
+                testStop.stop();
+                System.out.println("thread stop");
+            }
+        }
+        }
+    }
+
+
+```
+
+
+
+#### 线程休眠
+
+多用于模拟网络延时和实现倒计时
+
+![1584972587514](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1584972587514.png)
+
+```
+Date startTime = new Date(System.currentTimeMillis());
+new SimpleDateFormat(“HH:mm:ss”).format(startTime);
+```
+
+```java
+package com.lyy.state;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class TestSleep {
+    public static void main(String[] args) {
+        Date startTime = new Date(System.currentTimeMillis());
+        while (true){
+            try {
+                Thread.sleep(1000);
+                System.out.println(new SimpleDateFormat("HH:mm:ss").format(startTime));
+                startTime = new Date(System.currentTimeMillis());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+
+```
+
+
+
+#### 线程礼让yield
+
+![1584974329494](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1584974329494.png)
+
+![1584974636161](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1584974636161.png)
+
+
+
+#### join 线程强制执行
+
+![1584974773412](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1584974773412.png)
+
+![1584975883856](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1584975883856.png)
+
+
+
+#### 观测线程状态
+
+![1584976081626](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1584976081626.png)
+
+记得更新while循环中的变量
+
+![1584977085777](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1584977085777.png)
+
+线程处于TERMINATED状态后就不能再次start();了
+
+![1584977313282](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1584977313282.png)
+
+
+
+#### 守护线程
+
+#### 线程同步
+
+![1584978074849](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1584978074849.png)
+
+
+
+建议
+
+必看书《Java并发编程实战》，良心之作，薄薄的一本。阅读容易，比《java编程思想》这样好读太多，一句废话都没有！
+
+volatile语义
+
+CAS的工作原理和思想
+
+readwritelock的实现（最后都是AQS）
+
+Threadlocal，工作中非常有用的东西
+
+ReentrantLock和Condition的使用，强烈推荐阅读 ArrayBlockingQueue 源码，非常好读。
+
+线程之间等待的，countdownlatch,CyclicBarrier，Semaphore，这些面试老问，实际上用的到不多，一般用线程池就可以实现等待所有完成。
+
+JUC包里面的类都建议看一看。重点看看CoucurrentHashmap，用和问的都比较多，而且改动也大。
+
+线程池的使用，上面这些你学习了之后，你会发现使用是很简单的东西。
